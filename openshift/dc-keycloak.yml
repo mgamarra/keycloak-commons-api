@@ -1,0 +1,101 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+  creationTimestamp: null
+  generation: 1
+  labels:
+    app: keycloak
+  name: keycloak
+  selfLink: /apis/apps.openshift.io/v1/namespaces/hmlg/deploymentconfigs/keycloak
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    app: keycloak
+    deploymentconfig: keycloak
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources: {}
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  template:
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+      creationTimestamp: null
+      labels:
+        app: keycloak
+        deploymentconfig: keycloak
+    spec:
+      containers:
+      - env:
+        - name: DB_ADDR
+          value: onix
+        - name: DB_DATABASE
+          value: keycloak
+        - name: DB_PASSWORD
+          value: keycloak
+        - name: DB_USER
+          value: usrKeycloak
+        - name: DB_VENDOR
+          value: mssql
+        - name: KEYCLOAK_PASSWORD
+          value: admin@123
+        - name: KEYCLOAK_USER
+          value: admin
+        - name: PROXY_ADDRESS_FORWARDING
+          value: "true"
+        - name: app
+          value: keycloak
+        image: docker-registry.default.svc:5000/hmlg/keycloak@sha256:ffce460bca1a92ea6b3f46471dbd06210ee29323f5433b816137f615b8b2f758
+        imagePullPolicy: Always
+        name: keycloak
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /opt/jboss/keycloak/standalone/deployments
+          name: keycloak-deployments-hmlg
+        - mountPath: /opt/jboss/keycloak/themes
+          name: keycloak-themes-hmlg
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: keycloak-deployments-hmlg
+        persistentVolumeClaim:
+          claimName: keycloak-deployments-hmlg
+      - name: keycloak-themes-hmlg
+        persistentVolumeClaim:
+          claimName: keycloak-themes-hmlg
+  test: false
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - keycloak
+      from:
+        kind: ImageStreamTag
+        name: keycloak:latest
+        namespace: hmlg
+    type: ImageChange
+status:
+  availableReplicas: 0
+  latestVersion: 0
+  observedGeneration: 0
+  replicas: 0
+  unavailableReplicas: 0
+  updatedReplicas: 0
