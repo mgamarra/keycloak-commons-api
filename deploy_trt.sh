@@ -3,10 +3,10 @@
 #CUSTOMIZACAO - AMBIENTE PRD
 APP_NAME="keycloak"
 DB_VENDOR="mssql"
-DB_ADDR="prisma"
+DB_ADDR="server"
 DB_DATABASE="Keycloak"
 DB_USER="usrKeycloak"
-DB_PASSWORD="treina@keycloak"
+DB_PASSWORD="pass"
 KEYCLOAK_USER="admin"
 KEYCLOAK_PASSWORD="admin@123"
 PROJECT="trt"

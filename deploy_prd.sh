@@ -3,15 +3,13 @@
 #CUSTOMIZACAO - AMBIENTE PRD
 APP_NAME="keycloak"
 DB_VENDOR="mssql"
-DB_ADDR="vectra"
+DB_ADDR="server"
 DB_DATABASE="Keycloak"
 DB_USER="usrKeycloak"
-DB_PASSWORD="a9Pbu5LrSK3oWz"
+DB_PASSWORD="pass"
 KEYCLOAK_USER="admin"
 KEYCLOAK_PASSWORD="admin@123"
 PROJECT="prd"
-
-# executar do host sorento
 
 oc login -u system:admin
 
